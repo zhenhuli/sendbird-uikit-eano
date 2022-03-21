@@ -214,10 +214,10 @@ function setupChannelList({
         type: channelActions.INIT_CHANNELS_SUCCESS,
         payload: sorted,
       });
-      if (channelList && typeof channelList.forEach === 'function') {
-        logger.info('ChannelList - mark all channels as delivered');
-        channelList.forEach((c) => c.markAsDelivered());
-      }
+      // if (channelList && typeof channelList.forEach === 'function') {
+      //   logger.info('ChannelList - mark all channels as delivered');
+      //   channelList.forEach((c) => c.markAsDelivered());
+      // }
     });
   } else {
     logger.warning('ChannelList - there are no more channels');

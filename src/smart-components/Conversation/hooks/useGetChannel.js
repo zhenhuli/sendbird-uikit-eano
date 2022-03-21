@@ -8,6 +8,10 @@ function useSetChannel({ channelUrl, sdkInit }, {
   logger,
 }) {
   useEffect(() => {
+    messagesDispatcher({
+      type: messageActionTypes.RESET_STATE,
+      payload: null,
+    });
     if (channelUrl && sdkInit && sdk && sdk.GroupChannel) {
       logger.info('Channel | useSetChannel fetching channel', channelUrl);
       sdk.GroupChannel.getChannel(channelUrl)

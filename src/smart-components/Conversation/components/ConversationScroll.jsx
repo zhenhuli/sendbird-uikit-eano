@@ -65,7 +65,7 @@ export default class ConversationScroll extends Component {
       });
     }
 
-    if (clientHeight + scrollTop === scrollHeight) {
+    if (scrollHeight - clientHeight - scrollTop < 1) {
       const nodes = scrollRef.current.querySelectorAll(SCROLL_REF_CLASS_NAME);
       const last = nodes && nodes[nodes.length - 1];
       onScrollDown(([messages]) => {
@@ -83,7 +83,7 @@ export default class ConversationScroll extends Component {
     // do this later
     setTimeout(() => {
       // mark as read if scroll is at end
-      if (clientHeight + scrollTop === scrollHeight) {
+      if (scrollHeight - clientHeight - scrollTop < 1) {
         messagesDispatcher({
           type: messageActionTypes.MARK_AS_READ,
         });

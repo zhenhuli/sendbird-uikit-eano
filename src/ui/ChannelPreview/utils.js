@@ -30,12 +30,12 @@ export const getLastMessageCreatedAt = (channel, locale) => {
     return '';
   }
   if (isToday(createdAt)) {
-    return format(createdAt, 'p', { locale });
+    return locale ? format(createdAt, 'p', { locale }) : format(createdAt, 'p');
   }
   if (isYesterday(createdAt)) {
-    return formatRelative(createdAt, new Date(), { locale });
+    return locale ? formatRelative(createdAt, new Date(), { locale }) : formatRelative(createdAt, new Date());
   }
-  return format(createdAt, 'MMM dd', { locale });
+  return locale ? format(createdAt, 'MMM dd', { locale }) : format(createdAt, 'MMM dd');
 };
 
 export const getTotalMembers = (channel) => (

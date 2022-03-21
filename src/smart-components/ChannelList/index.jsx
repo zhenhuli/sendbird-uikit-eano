@@ -89,6 +89,9 @@ function ChannelList(props) {
   }, [sdkIntialized]);
 
   useEffect(() => {
+    channelListDispatcher({
+      type: channelListActions.RESET_CHANNEL_LIST
+    });
     setSdkChannelHandlerId(uuidv4);
     if (sdkIntialized) {
       logger.info('ChannelList: Setup channelHandlers');
@@ -196,8 +199,8 @@ function ChannelList(props) {
       <div
         className="sendbird-channel-list__body"
         onScroll={(e) => {
-          const fetchMore = e.target.clientHeight + e.target.scrollTop === e.target.scrollHeight;
-          if (fetchMore && channelSource.hasNext) {
+          const fetchMore = e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop < 5;
+          if (fetchMore && channelSource.hasNext && !channelSource.isLoading) {
             logger.info('ChannelList: Fetching more channels');
             channelListDispatcher({
               type: channelListActions.FETCH_CHANNELS_START,
@@ -223,10 +226,10 @@ function ChannelList(props) {
                 type: channelListActions.FETCH_CHANNELS_SUCCESS,
                 payload: channelList,
               });
-              if (channelList && typeof channelList.forEach === 'function') {
-                logger.info('ChannelList: Marking all channels as read');
-                channelList.forEach((c) => c.markAsDelivered());
-              }
+              // if (channelList && typeof channelList.forEach === 'function') {
+              //   logger.info('ChannelList: Marking all channels as read');
+              //   channelList.forEach((c) => c.markAsDelivered());
+              // }
             });
           }
         }}
