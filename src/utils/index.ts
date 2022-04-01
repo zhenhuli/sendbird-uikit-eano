@@ -544,8 +544,16 @@ export const filterChannelListParams = (params: SDKChannelListParamsPrivateProps
         break;
     }
   }
-  if (params?.metadataKey && params?.metadataValues?.length > 0 && params.metadataValues.includes(channel?.metadata[params.metadataKey])) {
-    return false;
+  if (params?.metadataKey && params?.metadataValues?.length > 0) {
+    let data = null;
+    
+    try {
+      data = JSON.parse(channel?.data);
+    } catch (e) { }
+    
+    if (!data || !params.metadataValues.includes(data[params.metadataKey])) {
+      return false;
+    }
   }
   return true;
 };

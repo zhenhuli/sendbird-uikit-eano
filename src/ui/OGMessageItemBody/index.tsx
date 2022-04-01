@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import { UserMessage } from 'sendbird';
 import './index.scss';
 
@@ -31,6 +31,7 @@ export default function OGMessageItemBody({
   const openOGUrl = (): void => {
     if (message?.ogMetaData?.url) window.open(message?.ogMetaData?.url);
   };
+  const [ogImgError, setOgImgError] = useState(false);
 
   return (
     <div className={getClassName([
@@ -76,29 +77,32 @@ export default function OGMessageItemBody({
           }
         </p>
       </Label>
-      <div
-        className="sendbird-og-message-item-body__og-thumbnail"
-        onClick={openOGUrl}
-      >
-        <ImageRenderer
-          className="sendbird-og-message-item-body__og-thumbnail__image"
-          url={message?.ogMetaData?.defaultImage?.url || ''}
-          alt={message?.ogMetaData?.defaultImage?.alt}
-          // TODO: Change fixing width and height lengths
-          width="320px"
-          height="180px"
-          defaultComponent={(
-            <div className="sendbird-og-message-item-body__og-thumbnail__place-holder">
-              <Icon
-                className="sendbird-og-message-item-body__og-thumbnail__place-holder__icon"
-                type={IconTypes.THUMBNAIL_NONE}
-                width="56px"
-                height="56px"
-              />
-            </div>
-          )}
-        />
-      </div>
+      {Boolean(message?.ogMetaData?.defaultImage?.url && !ogImgError) && (
+        <div
+          className="sendbird-og-message-item-body__og-thumbnail"
+          onClick={openOGUrl}
+        >
+          <ImageRenderer
+            className="sendbird-og-message-item-body__og-thumbnail__image"
+            url={message?.ogMetaData?.defaultImage?.url || ''}
+            alt={message?.ogMetaData?.defaultImage?.alt}
+            // TODO: Change fixing width and height lengths
+            width="320px"
+            height="180px"
+            defaultComponent={(
+              <div className="sendbird-og-message-item-body__og-thumbnail__place-holder">
+                <Icon
+                  className="sendbird-og-message-item-body__og-thumbnail__place-holder__icon"
+                  type={IconTypes.THUMBNAIL_NONE}
+                  width="56px"
+                  height="56px"
+                />
+              </div>
+            )}
+            onError={() => setOgImgError(true)}
+          />
+        </div>
+      )}
       <div
         className="sendbird-og-message-item-body__description"
         onClick={openOGUrl}
